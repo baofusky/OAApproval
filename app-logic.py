@@ -34,7 +34,7 @@ if 'action_code' not in st.session_state:
 
 
 def ucwi_credentials_form():
-    st.header("审批文件的详细信息")
+    st.header("请提供UCSS的IP地址和账号和密码")
 
     ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
     port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if
@@ -54,24 +54,8 @@ def ucwi_credentials_form():
         st.success("认证信息已保存")
 
 def ucwi_credentials_form1():
-    st.header("UCSS信息")
+    st.header("请提供文件审批用的详细信息")
 
-    ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
-    port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if
-    st.session_state['ucwi_credentials']['port'] else 0)
-    app_id = st.text_input("Webservices Id", value=st.session_state['ucwi_credentials']['app_id'])
-    access_key = st.text_input("Access Key", value=st.session_state['ucwi_credentials']['access_key'])
-    secret_key = st.text_input("Secret Key", value=st.session_state['ucwi_credentials']['secret_key'])
-
-    if st.button("请求token"):
-        st.session_state['ucwi_credentials'] = {
-            "ip_address": ip_address,
-            "port": str(port),
-            "app_id": app_id,
-            "access_key": access_key,
-            "secret_key": secret_key
-        }
-        st.success("认证信息已保存")
 
 def get_auth(access_key, secret_key, timestamp):
     token_source = secret_key + timestamp

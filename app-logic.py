@@ -237,11 +237,11 @@ def public_area():
 
 def login():
     """用户认证函数"""
-    st.title("文件流转平台")
+    st.title("Skyguard终端文件审批测试平台")
 
     # 写死的用户名和密码
     correct_username = "admin"
-    correct_password = "cnsec2024"
+    correct_password = "Firewall1!"
 
     username = st.text_input("用户名")
     password = st.text_input("密码", type="password")

@@ -20,8 +20,7 @@ if 'ucwi_credentials' not in st.session_state:
         "port": "",
         "app_id": "",
         "access_key": "",
-        "secret_key": "",
-        "tenant_id": ""
+        "secret_key": ""
     }
 
 if 'http_response' not in st.session_state:
@@ -43,7 +42,6 @@ def ucwi_credentials_form():
     app_id = st.text_input("Webservices Id", value=st.session_state['ucwi_credentials']['app_id'])
     access_key = st.text_input("Access Key", value=st.session_state['ucwi_credentials']['access_key'])
     secret_key = st.text_input("Secret Key", value=st.session_state['ucwi_credentials']['secret_key'])
-    tenant_id = st.text_input("tenant_id", value=st.session_state['ucwi_credentials']['tenant_id'])
 
     if st.button("保存认证信息"):
         st.session_state['ucwi_credentials'] = {
@@ -51,8 +49,7 @@ def ucwi_credentials_form():
             "port": str(port),
             "app_id": app_id,
             "access_key": access_key,
-            "secret_key": secret_key,
-            "tenant_id": tenant_id
+            "secret_key": secret_key
         }
         st.success("认证信息已保存")
 
@@ -72,12 +69,10 @@ def get_headers():
         st.session_state['ucwi_credentials']['access_key'],
         st.session_state['ucwi_credentials']['secret_key'],
         timestamp)
-    zuhuid = st.session_state['ucwi_credentials']['tenant_id']
 
     headers = {
         "X-Skg-Timestamp": timestamp,
         "authorization": auth,
-        "x-tenant-id": zuhuid
     }
     return headers
 
@@ -242,11 +237,11 @@ def public_area():
 
 def login():
     """用户认证函数"""
-    st.title("Skyguard UCWI文件测试平台")
+    st.title("文件流转平台")
 
     # 写死的用户名和密码
     correct_username = "admin"
-    correct_password = "Firewall1!"
+    correct_password = "cnsec2024"
 
     username = st.text_input("用户名")
     password = st.text_input("密码", type="password")

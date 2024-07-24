@@ -34,7 +34,7 @@ if 'action_code' not in st.session_state:
 
 
 def ucwi_credentials_form():
-    st.header("UCSS信息")
+    st.header("审批文件的详细信息")
 
     ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
     port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if

@@ -34,7 +34,7 @@ if 'action_code' not in st.session_state:
 
 
 def ucwi_credentials_form():
-    st.header("UCWI认证信息")
+    st.header("UCSS信息")
 
     ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
     port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if
@@ -43,7 +43,7 @@ def ucwi_credentials_form():
     access_key = st.text_input("Access Key", value=st.session_state['ucwi_credentials']['access_key'])
     secret_key = st.text_input("Secret Key", value=st.session_state['ucwi_credentials']['secret_key'])
 
-    if st.button("保存认证信息"):
+    if st.button("请求token"):
         st.session_state['ucwi_credentials'] = {
             "ip_address": ip_address,
             "port": str(port),
@@ -53,6 +53,25 @@ def ucwi_credentials_form():
         }
         st.success("认证信息已保存")
 
+def ucwi_credentials_form1():
+    st.header("UCSS信息")
+
+    ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
+    port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if
+    st.session_state['ucwi_credentials']['port'] else 0)
+    app_id = st.text_input("Webservices Id", value=st.session_state['ucwi_credentials']['app_id'])
+    access_key = st.text_input("Access Key", value=st.session_state['ucwi_credentials']['access_key'])
+    secret_key = st.text_input("Secret Key", value=st.session_state['ucwi_credentials']['secret_key'])
+
+    if st.button("请求token"):
+        st.session_state['ucwi_credentials'] = {
+            "ip_address": ip_address,
+            "port": str(port),
+            "app_id": app_id,
+            "access_key": access_key,
+            "secret_key": secret_key
+        }
+        st.success("认证信息已保存")
 
 def get_auth(access_key, secret_key, timestamp):
     token_source = secret_key + timestamp
@@ -272,15 +291,13 @@ def main():
     else:
         #st.set_page_config(layout="wide")
 
-        tabs = ["对接DLP", "公开区域", "内部区域"]
+        tabs = ["UCSS信息", "文件信息"]
         choice = st.sidebar.radio("菜单", tabs)
 
-        if choice == "对接DLP":
+        if choice == "UCSS信息":
             ucwi_credentials_form()
-        elif choice == "内部区域":
-            private_area()
-        else:
-            public_area()
-
+        elif choice == "文件信息":
+            defucwi_credentials_form1()
+  
 if __name__ == "__main__":
     main()

@@ -281,7 +281,7 @@ def main():
         if choice == "UCSS信息":
             ucwi_credentials_form()
         elif choice == "文件信息":
-            defucwi_credentials_form1()
+            ucwi_credentials_form1()
   
 if __name__ == "__main__":
     main()

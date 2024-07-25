@@ -78,11 +78,9 @@ def checkin():
         st.error(f"checkin的时候发生错误: {e}")
         return ""
 
-    client-id = response_json.get("client-id")
-    access-token = response_json.get("access-token")   
-    st.session_state['token_info'] = {"client-id": client-id, "access-token": access-token}
-    st.write(f"- clientid: {response_json.get("client-id")}")
-    st.write(f"- token: {response_json.get("access-token")}")
+
+    st.write(response_json)
+
     
 def ucss_credentials_form():
     st.header("请提供UCSS的IP地址和账号和密码")

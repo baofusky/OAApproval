@@ -74,12 +74,13 @@ def checkin():
         response = requests.post(url,headers=headers, json=body,verify=False)
         response.raise_for_status()
         response_json = json.loads(response.txt)
+        st.write(response_json)
     except requests.RequestException as e:
         st.error(f"checkin的时候发生错误: {e}")
         return ""
 
 
-    st.write(response_json)
+    
 
     
 def ucss_credentials_form():

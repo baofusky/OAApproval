@@ -8,12 +8,19 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import uuid
 import json
 import io
-
+from Crypto.Cipher import DES3
+from Crypto.Util.Padding import pad
+import base64
 
 
 # 初始化会话状态
 if 'file_content_public' not in st.session_state:
     st.session_state['file_content_public'] = {"content": "", "filename": "", "uploaded_at": ""}
+
+if 'token_info' not in st.session_state:
+    st.session_state['token_info'] = {"client_id": "", "access_token": ""}
+
+    
 if 'ucwi_credentials' not in st.session_state:
     st.session_state['ucwi_credentials'] = {
         "ip_address": "",
@@ -43,8 +50,39 @@ if 'action_code' not in st.session_state:
     st.session_state['action_code'] = ""
 
 def checkin():
-    pass
+    key = st.session_state['ucss_credentials']['microservice_key']
+    plaintext = st.session_state['ucss_credentials']['password']
+    padded_plaintext = pad(plaintext, DES3.block_size)
+    cipher = DES3.new(key, DES3.MODE_ECB)
+    ciphertext = cipher.encrypt(padded_plaintext)
+    base64_ciphertext = base64.b64encode(ciphertext).decode('utf-8')
 
+    requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+    url = f"https://{st.session_state['ucss_credentials']['ip_address']}:{st.session_state['ucss_credentials']['port']}/qkact/v1/checkin"
+    username = st.session_state['ucss_credentials']['account']
+    auth_base64 = base64.b64encode("{}:{}".format(username, base64_ciphertext).encode("utf-8")).decode("utf-8")
+    auth = "Basic {}".format(auth_base64)
+    headers = {
+            "Authorization": auth,
+            "User-Agent": "QKAct-External-Client",
+            "Content-Type": "application/json",
+        }
+    body = {
+            "client-id": "5817AFB7-A263-43CA-BD2A-39C93E36210C"
+        }
+    try:
+        response = requests.post(url,headers=headers, json=body,verify=False)
+        response.raise_for_status()
+        response_json = json.loads(response.txt)
+    except requests.RequestException as e:
+        st.error(f"checkin的时候发生错误: {e}")
+        return ""
+
+       
+    st.session_state['token_info'] = {"client_id": "response_json.get("client_id")", "access_token": "response_json.get("access-token")"}
+    st.write(f"- clientid: {response_json.get("client_id")}")
+    st.write(f"- token: {response_json.get("access-token")}")
+    
 def ucss_credentials_form():
     st.header("请提供UCSS的IP地址和账号和密码")
 

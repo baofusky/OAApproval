@@ -18,7 +18,7 @@ if 'file_content_public' not in st.session_state:
     st.session_state['file_content_public'] = {"content": "", "filename": "", "uploaded_at": ""}
 
 if 'token_info' not in st.session_state:
-    st.session_state['token_info'] = {"client_id": "", "access_token": ""}
+    st.session_state['token_info'] = {"client-id": "", "access-token": ""}
 
     
 if 'ucwi_credentials' not in st.session_state:
@@ -78,9 +78,10 @@ def checkin():
         st.error(f"checkin的时候发生错误: {e}")
         return ""
 
-       
-    st.session_state['token_info'] = {"client_id": "response_json.get("client_id")", "access_token": "response_json.get("access-token")"}
-    st.write(f"- clientid: {response_json.get("client_id")}")
+    client-id = response_json.get("client-id")
+    access-token = response_json.get("access-token")   
+    st.session_state['token_info'] = {"client-id": client-id, "access-token": access-token}
+    st.write(f"- clientid: {response_json.get("client-id")}")
     st.write(f"- token: {response_json.get("access-token")}")
     
 def ucss_credentials_form():

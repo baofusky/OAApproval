@@ -23,6 +23,16 @@ if 'ucwi_credentials' not in st.session_state:
         "secret_key": ""
     }
 
+if 'ucss_credentials' not in st.session_state:
+    st.session_state['ucss_credentials'] = {
+        "ip_address": "",
+        "port": "",
+        "microservice_key": "",
+        "account": "",
+        "password": ""
+    }
+
+
 if 'http_response' not in st.session_state:
     st.session_state['http_response'] = ""
 
@@ -32,28 +42,33 @@ if 'incident_info' not in st.session_state:
 if 'action_code' not in st.session_state:
     st.session_state['action_code'] = ""
 
+def checkin():
+    pass
 
-def ucwi_credentials_form():
+def ucss_credentials_form():
     st.header("请提供UCSS的IP地址和账号和密码")
 
-    ip_address = st.text_input("IP地址", value=st.session_state['ucwi_credentials']['ip_address'])
-    port = st.number_input("端口", value=int(st.session_state['ucwi_credentials']['port']) if
-    st.session_state['ucwi_credentials']['port'] else 0)
-    app_id = st.text_input("Webservices Id", value=st.session_state['ucwi_credentials']['app_id'])
-    access_key = st.text_input("Access Key", value=st.session_state['ucwi_credentials']['access_key'])
-    secret_key = st.text_input("Secret Key", value=st.session_state['ucwi_credentials']['secret_key'])
+    ip_address = st.text_input("IP地址", value=st.session_state['ucss_credentials']['ip_address'])
+    port = st.number_input("端口", value=int(st.session_state['ucss_credentials']['port']) if
+    st.session_state['ucss_credentials']['port'] else 0)
+    account = st.text_input("ucss管理员账号", value=st.session_state['ucss_credentials']['account'])
+    password = st.text_input("UCSS管理员密码", value=st.session_state['ucss_credentials']['password'])
+    microservice_key = st.text_input("管理员微服账号", value=st.session_state['ucss_credentials']['microservice_key'])
 
-    if st.button("请求token"):
-        st.session_state['ucwi_credentials'] = {
+    if st.button("保存UCSS信息"):
+        st.session_state['ucss_credentials'] = {
             "ip_address": ip_address,
             "port": str(port),
-            "app_id": app_id,
-            "access_key": access_key,
-            "secret_key": secret_key
+            "account": account,
+            "password": password,
+            "microservice_key": microservice_key
         }
-        st.success("认证信息已保存")
+        st.success("UCSS信息已保存")
+        
+    if st.button("Checkin"):
+        checkin()
 
-def ucwi_credentials_form1():
+def ucwi_credentials_form():
     st.header("请提供文件审批用的详细信息")
 
 
@@ -279,9 +294,9 @@ def main():
         choice = st.sidebar.radio("菜单", tabs)
 
         if choice == "UCSS信息":
-            ucwi_credentials_form()
+            ucss_credentials_form()
         elif choice == "文件信息":
-            ucwi_credentials_form1()
+            ucwi_credentials_form()
   
 if __name__ == "__main__":
     main()
